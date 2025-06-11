@@ -1,55 +1,27 @@
-import { useEffect, useState } from 'react';
-import { getAllPosts } from './api/posts';
-import {
-  Container,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Box,
-  CircularProgress,
-} from '@mui/material';
+import { Box } from "@mui/material";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProductTable from "./components/ProductTable";
+import AddProduct from "./pages/AddProduct";
+import EditProduct from "./pages/EditProduct";
+import Login from "./pages/Login";
+import ProductList from "./pages/ProductList";
+import Register from "./pages/Register";
 
-function App() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAllPosts()
-      .then((data) => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, []);
-
+const App: React.FC = () => {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ textAlign: 'center', mt: 5 }}>
-        <Typography variant="h4" gutterBottom>
-          📝 Blog Posts
-        </Typography>
-
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Paper elevation={3}>
-            <List>
-              {posts.map((post) => (
-                <ListItem key={post._id} divider>
-                  <ListItemText primary={post.title} />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        )}
-      </Box>
-    </Container>
+    <Router>
+      <Box sx={{ textAlign: "center", mt: 2 }}></Box>
+      <Routes>
+        <Route path="/list" element={<ProductList />} />
+        <Route path="/products/add" element={<AddProduct />} />
+        <Route path="/edit/:id" element={<EditProduct />} />
+        <Route path="/" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/table" element={<ProductTable />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

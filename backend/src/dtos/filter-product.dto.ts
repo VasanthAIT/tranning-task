@@ -29,4 +29,13 @@ export class FilterProductDto {
   @IsOptional()
   @IsNumberString()
   stock?: string;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string; 
+
+  @IsOptional()
+  @IsString()
+  sortOrder?: 'asc' | 'desc'; 
+
 }

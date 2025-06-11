@@ -9,6 +9,8 @@ import {
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
   Query,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -31,52 +33,63 @@ const storage = diskStorage({
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
   @Get('filter')
-  filterProducts(@Query() filter: FilterProductDto) {
-    return this.productService.filterProducts(filter);
+  async getFilteredProducts(@Query() query: FilterProductDto) {
+    return this.productService.getFilteredProducts(query);
   }
+
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  async create(@Body() createProductDto: CreateProductDto) {
+    return this.productService.create(createProductDto);
+  }
+
   @Post('single')
   @UseInterceptors(FileInterceptor('image', { storage }))
-  createSingleImage(
+  async createProductWithImage(
     @UploadedFile() file: Express.Multer.File,
-    @Body() dto: CreateProductDto,
+    @Body() body: CreateProductDto,
   ) {
-    return this.productService.create(dto, file?.filename);
+    const imageName = file?.filename;
+    return this.productService.create({ ...body, images: [imageName] });
   }
 
   @Post('multiple')
   @UseInterceptors(FilesInterceptor('gallery', 5, { storage }))
-  createMultipleImages(
+  async createMultipleImages(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() dto: CreateProductDto,
   ) {
     const galleryFilenames = files.map((file) => file.filename);
-    return this.productService.create(dto, undefined, galleryFilenames);
+    return this.productService.create({ ...dto, images: galleryFilenames });
   }
 
   @Put(':id')
-  @UseInterceptors(FilesInterceptor('gallery', 5, { storage }))
-  updateProduct(
+  @UseInterceptors(FilesInterceptor('images', 10, { storage }))
+  async updateProduct(
     @Param('id') id: string,
     @UploadedFiles() files: Express.Multer.File[],
-    @Body() dto: UpdateProductDto,
+    @Body() body: UpdateProductDto,
   ) {
-    const galleryFilenames = files?.map((file) => file.filename);
-    return this.productService.update(id, dto, undefined, galleryFilenames);
+    const imageNames = files.map((file) => file.filename);
+    return this.productService.update(id, { ...body, images: imageNames });
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
-  }
+async findAll(@Query() query: any) {
+  const { name, sort, order } = query;
+  return this.productService.findAll({ name, sort, order });
+}
+
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.productService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.productService.remove(id);
   }
 }

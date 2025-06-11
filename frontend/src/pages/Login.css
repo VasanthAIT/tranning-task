@@ -1,0 +1,37 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.login-card {
+  width: 400px;
+  padding: 32px;
+  border-radius: 12px;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-button {
+  margin-top: 24px;
+  border-color: #0c0457 ;
+  color: #ba68c8;
+}
+
+.login-button:hover {
+  background-color: #e4aaec;
+  color: white ;
+}
+
+.register-link {
+  color: #1f28a2;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}

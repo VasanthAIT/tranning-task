@@ -13,9 +13,13 @@ export class UsersService {
   async findByUsername(username: string): Promise<UserDocument | null> {
   return this.userModel.findOne({ username }).exec();
 }
-
-async create(userData: Partial<User>): Promise<UserDocument> {
-  const createdUser = new this.userModel(userData);
-  return createdUser.save();
+async findByEmail(email: string): Promise<User | null> {
+  return this.userModel.findOne({ email });
 }
+
+async create(userData: { username: string; email: string; password: string }) {
+  const newUser = new this.userModel(userData);
+  return await newUser.save();
+}
+
 }

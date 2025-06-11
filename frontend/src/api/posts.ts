@@ -1,8 +1,19 @@
-import axios from 'axios';
+export const API = "http://localhost:3000/auth";
 
-const API = 'http://localhost:3000'; 
+export const registerUser = async (username: string, password: string) => {
+  const res = await fetch(`${API}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+  return res.json();
+};
 
-export const getAllPosts = async () => {
-  const res = await axios.get(`${API}/posts`);
-  return res.data;
+export const loginUser = async (username: string, password: string) => {
+  const res = await fetch(`${API}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+  return res.json();
 };

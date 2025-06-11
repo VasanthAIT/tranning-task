@@ -17,8 +17,8 @@ export class Product {
   @Prop({ required: true, default: 0 })
   stock: number;
 
-  @Prop()
-  image?: string;
+@Prop({ type: [String], default: [] })
+images: string[];
 
   @Prop({ type: [String] })
   gallery?: string[];

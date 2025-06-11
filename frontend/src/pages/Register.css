@@ -1,0 +1,37 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.register-card {
+  width: 400px;
+  padding: 32px;
+  border-radius: 12px;
+}
+
+.register-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.register-button {
+  margin-top: 24px;
+  border-color: #0f1150 !important;
+  color: #68c880 !important;
+}
+
+.register-button:hover {
+  background-color:  #0f1150 !important;
+  color: white !important;
+}
+
+.login-link {
+  color: #0c08e9;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
