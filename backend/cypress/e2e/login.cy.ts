@@ -46,7 +46,7 @@ describe('Login Page', () => {
 
   it('should toggle password visibility', () => {
     cy.get('input[name="password"]').should('have.attr', 'type', 'password');
-    cy.get('button').find('svg').click(); // Toggles visibility
+    cy.get('button').find('svg').click(); 
     cy.get('input[name="password"]').should('have.attr', 'type', 'text');
   });
 
